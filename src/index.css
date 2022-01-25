@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+h2 {
+    margin: 10px 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.message {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 0 0 10px;
+}
+
+.board,
+.keyboard {
+    width: 100%;
+}
+
+.keyboard {
+    margin-top: 20px;
+}
+
+.board-row,
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    background-color: white;
+    color: black;
+    text-transform: uppercase;
+    border: 1px solid gray;
+    margin: 5px;
+}
+
+.letter {
+    background-color: lightgray;
+    color: black;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 3px;
+}
+
+.box.yellow,
+.letter.yellow {
+    background-color: gold;
+    color: white;
+}
+
+.box.green,
+.letter.green {
+    background-color: green;
+    color: white;
+}
+
+.box.gray,
+.letter.gray {
+    background-color: gray;
+    color: white;
+}
