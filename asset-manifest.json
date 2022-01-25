@@ -1,16 +1,13 @@
 {
   "files": {
-    "main.css": "/zwordle/static/css/main.073c9b0a.css",
-    "main.js": "/zwordle/static/js/main.d9f4f40e.js",
-    "static/js/787.3dccad60.chunk.js": "/zwordle/static/js/787.3dccad60.chunk.js",
-    "static/media/logo.svg": "/zwordle/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "main.css": "/zwordle/static/css/main.9d4a2172.css",
+    "main.js": "/zwordle/static/js/main.5fb51f60.js",
     "index.html": "/zwordle/index.html",
-    "main.073c9b0a.css.map": "/zwordle/static/css/main.073c9b0a.css.map",
-    "main.d9f4f40e.js.map": "/zwordle/static/js/main.d9f4f40e.js.map",
-    "787.3dccad60.chunk.js.map": "/zwordle/static/js/787.3dccad60.chunk.js.map"
+    "main.9d4a2172.css.map": "/zwordle/static/css/main.9d4a2172.css.map",
+    "main.5fb51f60.js.map": "/zwordle/static/js/main.5fb51f60.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.d9f4f40e.js"
+    "static/css/main.9d4a2172.css",
+    "static/js/main.5fb51f60.js"
   ]
 }
