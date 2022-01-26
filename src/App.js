@@ -4,6 +4,9 @@ import Message from './components/Message'
 import Board from './components/Board'
 import Keyboard from './components/Keyboard'
 
+import wordsToGuess from './data/wordsToGuess'
+import validWords from './data/validWords'
+
 const App = () => {
     const [game, setGame] = useState({
         state: 'active',
@@ -44,7 +47,7 @@ const App = () => {
             { letter: 'l', state: '' }
         ],
         [
-            { letter: 'del', state: '' },
+            { letter: 'enter', state: '' },
             { letter: 'z', state: '' },
             { letter: 'x', state: '' },
             { letter: 'c', state: '' },
@@ -52,74 +55,83 @@ const App = () => {
             { letter: 'b', state: '' },
             { letter: 'n', state: '' },
             { letter: 'm', state: '' },
-            { letter: 'enter', state: '' }
+            { letter: 'del', state: '' }
         ]
     ])
 
-    const wordToGuess = 'zebra'
+    const initialDate = new Date(2022, 0, 25)
+    const currentDate = new Date()
+    const wordIndex = Math.round((currentDate.setHours(0, 0, 0, 0) - initialDate.setHours(0, 0, 0, 0)) / (1000 * 3600 * 24))
+    const wordToGuess = wordsToGuess[wordIndex]
 
     const processGuess = () => {
-        // set new board state
-        const newBoard = JSON.parse(JSON.stringify(board))
-        const newKeyboard = JSON.parse(JSON.stringify(keyboard))
-        newBoard[game.row] = newBoard[game.row].map((boardLetter, index) => {
-            let boardLetterState = ''
-            if (wordToGuess[index] === boardLetter.letter) {
-                boardLetterState = 'green'
-            } else if (wordToGuess.includes(boardLetter.letter)) {
-                boardLetterState = 'yellow'
-            } else {
-                boardLetterState = 'gray'
-            }
+        const newWord = board[game.row].map(letterObject => letterObject.letter).join('')
 
-            // update keyboard
-            newKeyboard.forEach((row) => {
-                const letterMatch = row.find(keyboardLetter => keyboardLetter.letter === boardLetter.letter)
-                if (letterMatch && letterMatch.state !== 'green') {
-                    letterMatch.state = boardLetterState
+        if (validWords.includes(newWord)) {
+            // set new board state
+            const newBoard = JSON.parse(JSON.stringify(board))
+            const newKeyboard = JSON.parse(JSON.stringify(keyboard))
+            newBoard[game.row] = newBoard[game.row].map((boardLetter, index) => {
+                let boardLetterState = ''
+                if (wordToGuess[index] === boardLetter.letter) {
+                    boardLetterState = 'green'
+                } else if (wordToGuess.includes(boardLetter.letter)) {
+                    boardLetterState = 'yellow'
+                } else {
+                    boardLetterState = 'gray'
+                }
+
+                // update keyboard
+                newKeyboard.forEach((row) => {
+                    const letterMatch = row.find(keyboardLetter => keyboardLetter.letter === boardLetter.letter)
+                    if (letterMatch && letterMatch.state !== 'green') {
+                        letterMatch.state = boardLetterState
+                    }
+                })
+
+                return {
+                    letter: boardLetter.letter,
+                    state: boardLetterState
                 }
             })
+            setBoard(newBoard)
+            setKeyboard(newKeyboard)
 
-            return {
-                letter: boardLetter.letter,
-                state: boardLetterState
+            if (newBoard[game.row].map(letterObject => letterObject.letter).join('') === wordToGuess) {
+                setGame({
+                    ...game,
+                    state: 'win'
+                })
+                setMessage('Good job, you win!')
+            } else if (game.row === 5) {
+                setGame({
+                    ...game,
+                    state: 'lose'
+                })
+                setMessage(`Sorry, the word was "${wordToGuess.toUpperCase()}"`)
+            } else {
+                setGame({
+                    ...game,
+                    row: game.row += 1,
+                    column: 0
+                })
             }
-        })
-        setBoard(newBoard)
-        setKeyboard(newKeyboard)
-
-        if (newBoard[game.row].map(letterObject => letterObject.letter).join('') === wordToGuess) {
-            setGame({
-                ...game,
-                state: 'win'
-            })
-            setMessage('You win!')
-        } else if (game.row === 5) {
-            setGame({
-                ...game,
-                state: 'lose'
-            })
-            setMessage('You lose!')
         } else {
-            setGame({
-                ...game,
-                row: game.row += 1,
-                column: 0
-            })
+            setMessage(`${newWord.toUpperCase()} is not a valid word`)
         }
     }
 
-    const handleButtonClick = (event) => {
+    const handleLetterInput = (letterValue) => {
         if (game.state === 'active') {
-            const buttonValue = event.target.innerHTML
-            //console.log(buttonValue)
-
-            if (buttonValue === 'enter') {
+            setMessage('')
+            if (letterValue === 'enter') {
                 if (game.column === 5) {
                     processGuess()
+                } else {
+                    setMessage('Not enough letters!')
                 }
 
-            } else if (buttonValue === 'del') {
+            } else if (letterValue === 'backspace') {
                 if (game.column > 0) {
                     const newBoard = JSON.parse(JSON.stringify(board))
                     newBoard[game.row][game.column - 1].letter = ''
@@ -129,10 +141,10 @@ const App = () => {
                         column: game.column -= 1
                     })
                 }
-            } else {
+            } else if (letterValue.length === 1 && letterValue >= 'a' && letterValue <= 'z') {
                 if (game.column < 5) {
                     const newBoard = JSON.parse(JSON.stringify(board))
-                    newBoard[game.row][game.column].letter = buttonValue
+                    newBoard[game.row][game.column].letter = letterValue
                     setBoard(newBoard)
                     setGame({
                         ...game,
@@ -143,15 +155,40 @@ const App = () => {
         }
     }
 
+    const handleShare = () => {
+        let shareString = `Zwordle #${wordIndex + 1} ${game.row + 1}/${board.length}\n\n`
+        shareString += board.map((row) => {
+            return row.map(letterObject => {
+                switch (letterObject.state) {
+                    case 'green':
+                        return '🟩'
+                    case 'yellow':
+                        return '🟨'
+                    case 'gray':
+                        return '⬜'
+                    default:
+                        return ''
+                }
+            }).join('')
+        }).join('\n').trim()
+
+        navigator.clipboard.writeText(shareString)
+    }
+
     return (
-        <div className='container'>
-            <h2>Zwordle</h2>
-            <Message message={message} />
-            <Board board={board} />
-            <Keyboard
-                keyboard={keyboard}
-                handleButtonClick={handleButtonClick}
-            />
+        <div className='zwordle-game'>
+            <div className='container'>
+                <h2>Zwordle #{wordIndex + 1}</h2>
+                <Message
+                    game={game}
+                    message={message}
+                    handleShare={handleShare} />
+                <Board board={board} />
+                <Keyboard
+                    keyboard={keyboard}
+                    handleLetterInput={handleLetterInput}
+                />
+            </div>
         </div>
     )
 }

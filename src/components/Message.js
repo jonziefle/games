@@ -1,12 +1,24 @@
 import React from 'react'
 
-const Message = ({ message }) => {
+const Message = ({ game, message, handleShare }) => {
     if (message === '') {
-        return null
+        return (
+            <div className='message-area'></div>
+        )
     }
 
     return (
-        <div className='message'>{message}</div>
+        <div className='message-area'>
+            <div className='message'>
+                <span>{message}</span>
+                {
+                    game.state === 'win' &&
+                    <button
+                        className='share-button'
+                        onClick={handleShare}>Share</button>
+                }
+            </div>
+        </div>
     )
 }
 
