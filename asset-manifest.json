@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/zwordle/static/css/main.bbfaebb2.css",
-    "main.js": "/zwordle/static/js/main.b5141adc.js",
+    "main.css": "/zwordle/static/css/main.103e9dcf.css",
+    "main.js": "/zwordle/static/js/main.e6ef049e.js",
     "index.html": "/zwordle/index.html",
-    "main.bbfaebb2.css.map": "/zwordle/static/css/main.bbfaebb2.css.map",
-    "main.b5141adc.js.map": "/zwordle/static/js/main.b5141adc.js.map"
+    "main.103e9dcf.css.map": "/zwordle/static/css/main.103e9dcf.css.map",
+    "main.e6ef049e.js.map": "/zwordle/static/js/main.e6ef049e.js.map"
   },
   "entrypoints": [
-    "static/css/main.bbfaebb2.css",
-    "static/js/main.b5141adc.js"
+    "static/css/main.103e9dcf.css",
+    "static/js/main.e6ef049e.js"
   ]
 }
