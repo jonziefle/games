@@ -22,14 +22,35 @@ h2 {
 }
 
 .message-area {
-    height: 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .message {
+    position: absolute;
+    display: flex;
+    align-items: center;
     background-color: white;
-    padding: 5px;
+    padding: 10px 15px;
     border: 2px solid black;
     border-radius: 5px;
+}
+
+.hint {
+    padding: 0 40px;
+}
+
+.hint span {
+    font-weight: bold;
+}
+
+.hint-button { 
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 4px 8px;
+    margin-bottom: 10px;
 }
 
 .share-button {
@@ -46,7 +67,7 @@ h2 {
 }
 
 .keyboard {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .board-row,
@@ -69,6 +90,9 @@ h2 {
     margin: 2px;
 }
 
+.keyboard-row:not(:last-child) {
+    margin-bottom: 5px;
+}
 .letter {
     flex: 1;
     height: 50px;
@@ -78,7 +102,7 @@ h2 {
     border: 0;
     border-radius: 5px;
     padding: 0 4px;
-    margin: 3px;
+    margin: 0 3px;
 }
 
 .spacer--half {
@@ -105,4 +129,10 @@ h2 {
 .letter.gray {
     background-color: gray;
     color: white;
+}
+
+@media (min-width: 768px) {
+    .keyboard {
+        margin-top: 20px;
+    }
 }

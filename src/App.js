@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import Message from './components/Message'
+import Hint from './components/Hint'
 import Board from './components/Board'
 import Keyboard from './components/Keyboard'
 
@@ -183,6 +184,8 @@ const App = () => {
                     game={game}
                     message={message}
                     handleShare={handleShare} />
+                <Hint
+                    wordToGuess={wordToGuess} />
                 <Board board={board} />
                 <Keyboard
                     keyboard={keyboard}
