@@ -1,20 +1,7 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 
-const Hint = ({ wordToGuess }) => {
-    const [hint, setHint] = useState('')
+const Hint = ({ hint }) => {
     const [visible, setVisible] = useState(false)
-
-    axios
-        .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordToGuess}`)
-        .then(response => {
-            try {
-                setHint(response.data[0].meanings[0].definitions[0].definition)
-            }
-            catch (error) {
-                setHint('')
-            }
-        }, [])
 
     const hideWhenVisible = { display: visible ? 'none' : '' }
     const showWhenVisible = { display: visible ? '' : 'none' }

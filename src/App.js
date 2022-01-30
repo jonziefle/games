@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import Message from './components/Message'
 import Hint from './components/Hint'
@@ -14,6 +15,9 @@ const App = () => {
         row: 0,
         column: 0
     })
+    const [wordIndex, setWordIndex] = useState(null)
+    const [wordToGuess, setWordToGuess] = useState('')
+    const [hint, setHint] = useState('')
     const [message, setMessage] = useState('')
     const [board, setBoard] = useState([
         [{ letter: '', state: '' }, { letter: '', state: '' }, { letter: '', state: '' }, { letter: '', state: '' }, { letter: '', state: '' }],
@@ -60,10 +64,31 @@ const App = () => {
         ]
     ])
 
-    const initialDate = new Date(2022, 0, 25)
-    const currentDate = new Date()
-    const wordIndex = Math.round((currentDate.setHours(0, 0, 0, 0) - initialDate.setHours(0, 0, 0, 0)) / (1000 * 3600 * 24))
-    const wordToGuess = wordsToGuess[wordIndex]
+    useEffect(() => {
+        const initialDate = new Date(2022, 0, 25)
+        const currentDate = new Date()
+        const index = Math.round((currentDate.setHours(0, 0, 0, 0) - initialDate.setHours(0, 0, 0, 0)) / (1000 * 3600 * 24))
+
+        setWordIndex(index)
+        setWordToGuess(wordsToGuess[index])
+        getHint(wordsToGuess[index])
+    }, [])
+
+    const getHint = (word) => {
+        axios
+            .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
+            .then(response => {
+                try {
+                    setHint(response.data[0].meanings[0].definitions[0].definition)
+                }
+                catch (error) {
+                    setHint('')
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
 
     const processGuess = () => {
         const newWord = board[game.row].map(letterObject => letterObject.letter).join('')
@@ -185,7 +210,7 @@ const App = () => {
                     message={message}
                     handleShare={handleShare} />
                 <Hint
-                    wordToGuess={wordToGuess} />
+                    hint={hint} />
                 <Board board={board} />
                 <Keyboard
                     keyboard={keyboard}
